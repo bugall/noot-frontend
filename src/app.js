@@ -1,28 +1,24 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import iView from 'iview'
-import iviewArea from 'iview-area'
-import App from './App'
-import { router } from './router/index'
-import store from './store'
+const iView = require('iview/dist/iview.js');
+import App from './App.vue'
+import { createStore } from './store'
+import { createRouter } from './router'
 import '@/locale'
 import 'iview/dist/styles/iview.css'
 import VueI18n from 'vue-i18n';
-import Icon from 'vue-awesome/components/Icon'
+import { Icon } from 'vue-awesome'
 // 按需引入awesome图标
-import 'vue-awesome/icons/brands/qq'
-import 'vue-awesome/icons/brands/weixin'
 import { getRequest, postRequest, putRequest, deleteRequest, uploadFileRequest } from '@/libs/axios'
 import { setStore, getStore, removeStore } from '@/libs/storage'
 import util from '@/libs/util';
 import hasPermission from '@/libs/hasPermission';
-import '@babel/polyfill'
+import { sync } from 'vuex-router-sync'
 
 Vue.config.productionTip = false
 Vue.use(VueI18n);
 Vue.use(iView);
-Vue.use(iviewArea);
 Vue.component('icon', Icon);
 Vue.use(hasPermission);
 // 挂载全局使用的方法
@@ -36,7 +32,22 @@ Vue.prototype.getStore = getStore;
 Vue.prototype.removeStore = removeStore;
 
 /* eslint-disable no-new */
-new Vue({
+
+
+export function createApp () {
+  // create store and router instances
+  const store = createStore()
+  const router = createRouter()
+
+  // sync the router with the vuex store.
+  // this registers `store.state.route`
+  sync(store, router)
+
+  
+  // create the app instance.
+  // here we inject the router, store and ssr context to all child components,
+  // making them available everywhere as `this.$router` and `this.$store`.
+  const app = new Vue({
     el: '#app',
     router,
     store,
@@ -53,3 +64,9 @@ new Vue({
         this.$store.commit('initCachepage');
     }
 })
+
+  // expose the app, the router and the store.
+  // note we are not mounting the app here, since bootstrapping will be
+  // different depending on whether we are in a browser or on the server.
+  return { app, router, store }
+}

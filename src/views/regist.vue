@@ -39,16 +39,6 @@
             <Button size="large" disabled v-if="sended" class="count-verify">{{countButton}}</Button>
           </Row>
         </FormItem>
-        <FormItem prop="verify">
-          <Row type="flex" justify="space-between" class="code-row-bg" style="align-items: center;overflow: hidden;">
-            <Input v-model="form.verify" size="large" clearable placeholder="请输入验证码" :maxlength="10" class="input-verify" />
-            <div style="position:relative">
-              <Spin v-if="loadingCode" fix></Spin>
-              <img :src="verifyCodeImg"  @click="getVerifyCode" alt="加载验证码失败" style="width:100px;cursor:pointer;display:block">
-            </div>
-  
-          </Row>
-        </FormItem>
       </Form>
   
       <Row type="flex" justify="space-between" class="code-row-bg">
@@ -275,16 +265,6 @@ export default {
         }
       });
     },
-    getVerifyCode() {
-      this.loadingCode = true;
-      initCaptcha().then(res => {
-        if (res.message ===  'success') {
-          this.captchaId = res.data.captchaId;
-          this.verifyCodeImg = drawCodeImage + this.captchaId;
-          this.loadingCode = false;
-        }
-      });
-    }
   },
   mounted() {
     this.getVerifyCode();

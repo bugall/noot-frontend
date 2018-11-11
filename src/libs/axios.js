@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { getStore, setStore } from './storage';
-import { router } from '../router/index';
+import { createRouter } from '../router/index';
 import { Message } from 'iview';
 import Cookies from 'js-cookie';
+
+const router = createRouter();
 let base = 'http://localhost:7001/api/v1';
 // 超时设定
 axios.defaults.timeout = 15000;

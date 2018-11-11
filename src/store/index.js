@@ -6,21 +6,22 @@ import user from './modules/user';
 
 Vue.use(Vuex);
 
-const store = new Vuex.Store({
+
+export function createStore() {
+  return new Vuex.Store({
     state: {
-        // 状态
-        
+      // 状态
+
     },
     mutations: {
-        // 改变方法
+      // 改变方法
     },
     actions: {
 
     },
     modules: {
-        app,
-        user
+      app,
+      user
     }
-});
-
-export default store;
+  });
+}

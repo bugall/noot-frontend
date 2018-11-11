@@ -1,9 +1,12 @@
 import { otherRouter } from '@/router/router';
-import { router } from '@/router/index';
+import { createRouter } from '@/router/index';
 import Util from '@/libs/util';
 import Cookies from 'js-cookie';
 import Vue from 'vue';
 
+const router = createRouter();
+
+let localStorage = {};
 const app = {
     state: {
         cachePage: [],

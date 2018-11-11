@@ -1,12 +1,18 @@
 import Vue from 'vue';
 import Locales from './locale';
-import zhLocale from 'iview/src/locale/lang/zh-CN';
-import enLocale from 'iview/src/locale/lang/en-US';
+import zhLocale from 'iview/dist/locale/zh-CN';
+import enLocale from 'iview/dist/locale/en-US';
 
 // 自动设置语言
-const navLang = navigator.language;
-const localLang = (navLang === 'zh-CN' || navLang === 'en-US') ? navLang : false;
-const lang = window.localStorage.lang || localLang || 'zh-CN';
+let navLang = '';
+let localLang = 'zh-cn';
+let lang = 'zh-ch';
+
+if (typeof navigator !== 'undefined') {
+  navLang = navigator.language;
+  localLang = (navLang === 'zh-CN' || navLang === 'en-US') ? navLang : false;
+  lang = window.localStorage.lang || localLang || 'zh-CN';
+}
 
 Vue.config.lang = lang;
 
